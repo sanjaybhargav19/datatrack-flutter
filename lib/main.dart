@@ -487,6 +487,7 @@ class DashboardScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 22),
+                  // Circular usage indicator with centered percentage text.
                   Center(
                     child: SizedBox(
                       width: 190,
@@ -494,33 +495,44 @@ class DashboardScreen extends StatelessWidget {
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
-                          TweenAnimationBuilder<double>(
-                            tween: Tween(
-                              begin: 0,
-                              end: p.percentage.clamp(0.0, 1.0),
-                            ),
-                            duration: const Duration(seconds: 1),
-                            builder: (context, value, child) {
-                              return CircularProgressIndicator(
-                                value: value,
-                                strokeWidth: 15,
-                                backgroundColor: Colors.grey.shade300,
-                                color: Colors.blue,
-                              );
-                            },
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                '${(p.percentage * 100).toStringAsFixed(0)}%',
-                                style: const TextStyle(
-                                  fontSize: 35,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                          SizedBox(
+                            width: 170,
+                            height: 170,
+                            child: TweenAnimationBuilder<double>(
+                              tween: Tween<double>(
+                                begin: 0,
+                                end: p.percentage.clamp(0.0, 1.0),
                               ),
-                              const Text('Used'),
-                            ],
+                              duration: const Duration(seconds: 1),
+                              builder: (context, value, child) {
+                                return CircularProgressIndicator(
+                                  value: value,
+                                  strokeWidth: 12,
+                                  backgroundColor: Colors.grey.shade700,
+                                  color: Colors.blue,
+                                );
+                              },
+                            ),
+                          ),
+                          Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  '${(p.percentage.clamp(0.0, 1.0) * 100).toStringAsFixed(0)}%',
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                const Text(
+                                  'Used',
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
